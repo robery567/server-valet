@@ -12,6 +12,17 @@ import java.sql.Timestamp;
 @Entity
 @Table(name="user")
 public class User {
+    public User(Integer id, String email, String password){
+        this.setId(id);
+        this.setEmail(email);
+        this.setPassword(password);
+    }
+
+    public User(String email, String password){
+        this.setEmail(email);
+        this.setPassword(password);
+    }
+
     @Id
     @Column(name="id")
     @GeneratedValue(strategy=GenerationType.AUTO)

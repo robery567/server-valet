@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 public class Home {
     @GetMapping(path= "/index")
     public String index(){
-
-        return "test";
+        return "dashboard";
     }
 }
