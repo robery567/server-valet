@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Map;
 
 @Controller
-public class Account {
+public class AccountController {
 
     private UserService UserService;
 
-    public Account(UserService UserService) {
+    public AccountController(UserService UserService) {
         this.UserService = UserService;
     }
 
@@ -47,7 +47,7 @@ public class Account {
         }
 
         model.put("content", "login");
-        return "login";
+        return "account";
     }
 
     /**
@@ -80,6 +80,7 @@ public class Account {
             model.put("content", "register");
             return "account";
         }
+
         try {
             UserService.addUser(new User(username, password));
         } catch (Exception e) {
@@ -90,5 +91,4 @@ public class Account {
 
         return "redirect:/account/login?success";
     }
-
 }

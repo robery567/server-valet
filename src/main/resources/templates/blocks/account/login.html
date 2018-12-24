@@ -1,0 +1,45 @@
+<div class="animate form login_form" xmlns:th="http://www.thymeleaf.org">
+    <section class="login_content">
+        <form th:action="@{/j_spring_security_check}" th:method="POST">
+            <th:block th:if="${error != null}">
+                <div class="row justify-content-center">
+                    <div class="col-10">
+                        <div th:text="${error}" class="alert alert-danger" role="alert"></div>
+                    </div>
+                </div>
+            </th:block>
+
+            <th:block th:if="${success != null}">
+                <div class="row justify-content-center">
+                    <div class="col-10">
+                        <div th:text="${success}" class="alert alert-success" role="alert"></div>
+                    </div>
+                </div>
+            </th:block>
+            <h1>Login Form</h1>
+            <div>
+                <input type="text" name="username" class="form-control" placeholder="Username" required=""/>
+            </div>
+            <div>
+                <input type="password" name="password" class="form-control" placeholder="Password" required=""/>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-default submit">Log in</button>
+                <a class="reset_pass" href="#">Lost your password?</a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="separator">
+                <p class="change_link">New to site?
+                    <a href="/account/register" class="to_register"> Create Account </a>
+                </p>
+
+                <div class="clearfix"></div>
+                <br/>
+
+                <div th:replace="blocks/account/fragment/footer"></div>
+            </div>
+        </form>
+    </section>
+</div>
