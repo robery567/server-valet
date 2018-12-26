@@ -11,6 +11,8 @@ public class UserDetailProvider implements UserDetails {
 
     private String password;
 
+    private String username;
+
     private Collection<? extends GrantedAuthority> authorities;
 
     UserDetailProvider(Integer userId, String password, Collection<? extends GrantedAuthority> authorities) {
@@ -26,13 +28,15 @@ public class UserDetailProvider implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return userId.toString();
+        return this.username;
     }
+
+    public String getUserId() { return this.userId.toString(); }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -53,4 +57,6 @@ public class UserDetailProvider implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public void setUsername(String username) { this.username = username; }
 }
