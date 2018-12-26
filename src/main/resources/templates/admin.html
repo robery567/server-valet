@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="blocks/head"></head>
+
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+        <!-- Side Menu -->
+        <div th:replace="blocks/admin/fragments/menu"></div>
+        <!-- /Side Menu -->
+
+        <!-- top navigation -->
+        <div th:replace="blocks/admin/fragments/header"></div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+            <div th:replace="${#strings.concat('blocks/admin/', moduleName)}"></div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer th:replace="blocks/admin/fragments/footer_note"></footer>
+        <!-- /footer content -->
+    </div>
+</div>
+
+<div th:replace="blocks/footer"></div>
+</body>
+</html>
