@@ -17,6 +17,6 @@ public class HomeController {
     @GetMapping(path= "/index")
     public String index(Map<String, Object> model){
         model.put("moduleName", "dashboard");
-        return "dashboard";
+        return "admin";
     }
 }
