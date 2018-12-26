@@ -20,10 +20,10 @@ public class UserRepositoryProvider implements UserRepository {
     }
 
     @Override
-    public User getByEmail(String email) {
+    public User getIdByUsername(String username) {
         return jdbcTemplate.queryForObject(
-                "SELECT `id`, `email`, `password` FROM `user` WHERE `email` = ? LIMIT 1",
-                new Object[]{email},
+                "SELECT `id`, `email`, `password` FROM `user` WHERE `username` = ? LIMIT 1",
+                new Object[]{username},
                 (rs, rowNum) -> new User(rs.getInt("id"), rs.getString("email"), rs.getString("password"))
         );
     }
