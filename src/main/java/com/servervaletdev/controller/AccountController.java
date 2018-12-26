@@ -79,12 +79,10 @@ public class AccountController {
 
         try {
             User newUser = new User(username, email, password);
-            System.out.println("created object!");
 
             UserRepository.save(newUser);
         } catch (Exception e) {
             model.put("error", e.getMessage());
-            System.out.println("USERNAME: " + username + ", PASSWORD: " + password + ", EMAIL: " + email);
             model.put("content", "register");
             return "account";
         }
