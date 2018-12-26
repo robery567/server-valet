@@ -1,6 +1,6 @@
 package com.servervaletdev.controller;
 
-import com.servervaletdev.service.UserService;
+import com.servervaletdev.repository.UserRepository;
 import com.servervaletdev.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +13,10 @@ import java.util.Map;
 @Controller
 public class AccountController {
 
-    private UserService UserService;
+    private UserRepository UserRepository;
 
-    public AccountController(UserService UserService) {
-        this.UserService = UserService;
+    public AccountController(UserRepository userRepository) {
+        this.UserRepository = userRepository;
     }
 
     /**
@@ -64,9 +64,9 @@ public class AccountController {
     /**
      * Performs the registration and shows errors if any
      * @param model the data to send to the view
-     * @param username the users email address
+     * @param username the users nickname
      * @param password the users password
-     * @param repassword the password check, must match with password
+     * @param email the users email address
      * @return template name
      */
     @PostMapping("/account/register")
@@ -74,17 +74,17 @@ public class AccountController {
             Map<String, Object> model,
             @RequestParam("username") String username,
             @RequestParam("password") String password,
-            @RequestParam("password") String repassword) {
-        if (!password.equals(repassword)) {
-            model.put("error", "The passwords do not match");
-            model.put("content", "register");
-            return "account";
-        }
+            @RequestParam("email") String email
+            ) {
 
         try {
-            UserService.addUser(new User(username, password));
+            User newUser = new User(username, email, password);
+            System.out.println("created object!");
+
+            UserRepository.save(newUser);
         } catch (Exception e) {
-            model.put("error", "Unable to save user");
+            model.put("error", e.getMessage());
+            System.out.println("USERNAME: " + username + ", PASSWORD: " + password + ", EMAIL: " + email);
             model.put("content", "register");
             return "account";
         }

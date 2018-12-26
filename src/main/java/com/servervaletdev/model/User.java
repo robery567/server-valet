@@ -8,19 +8,26 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Column;
 import java.sql.Timestamp;
+import java.util.Calendar;
 
 @Entity
 @Table(name="user")
 public class User {
-    public User(Integer id, String email, String password){
+    public User(Integer id, String email, String password) {
         this.setId(id);
         this.setEmail(email);
         this.setPassword(password);
     }
 
-    public User(String email, String password){
+    public User(String username, String email, String password) {
+        this.setUsername(username);
         this.setEmail(email);
         this.setPassword(password);
+
+        Calendar calendar = Calendar.getInstance();
+        java.util.Date now = calendar.getTime();
+
+        this.setCreationDate(new java.sql.Timestamp(now.getTime()));
     }
 
     @Id
