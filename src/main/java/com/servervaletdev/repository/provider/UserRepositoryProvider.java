@@ -6,6 +6,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Map;
+
 @Repository
 public class UserRepositoryProvider implements UserRepository {
 
@@ -28,6 +31,12 @@ public class UserRepositoryProvider implements UserRepository {
         );
     }
 
+    public List<Map<String, Object>> getUserServersByUserId(String userId) {
+        return jdbcTemplate.queryForList(
+                "SELECT `id`, `date_added`, `hostname`, `ip` FROM `server` WHERE `user_id` = ?",
+                userId
+        );
+    }
 
     @Override
     public void save(User user) {
