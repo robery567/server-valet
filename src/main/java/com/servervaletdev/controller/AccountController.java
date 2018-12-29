@@ -133,12 +133,10 @@ public class AccountController {
             Integer userId = currentSession.getIntegerUserId();
 
             Server newServer = new Server(hostname, username, password, port, userId);
-            System.out.println("created object");
             this.ServerRepository.save(newServer);
         } catch (Exception e) {
             model.put("error", e.getMessage());
             model.put("content", "setup");
-            System.out.println("esec");
             return "account";
         }
 

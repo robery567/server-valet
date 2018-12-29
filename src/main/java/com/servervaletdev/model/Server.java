@@ -57,8 +57,6 @@ public class Server {
         this.password = password;
         this.port = port;
         this.userId = ownerId;
-
-        System.out.println("Hostname: " + hostname + ", Username: " + username + ", Password: " + password + ", Port:" + port + ", UserID: " + userId);
     }
 
     /**
