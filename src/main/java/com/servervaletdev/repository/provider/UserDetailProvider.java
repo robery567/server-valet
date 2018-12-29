@@ -38,6 +38,10 @@ public class UserDetailProvider implements UserDetails {
 
     public String getUserId() { return this.userId.toString(); }
 
+    public Integer getIntegerUserId() {
+        return this.userId;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

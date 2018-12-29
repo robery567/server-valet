@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository {
     /**
-     * Gets the user with email = {email}
+     * Gets the user with username = {username}
      * @param username the username of the user to find
      * @return an User
      */

@@ -47,14 +47,18 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Modal Header</h4>
+                    <h4 class="modal-title">Incomplete Set-up</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Some text in the modal.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <div class="alert alert-danger" role="alert">
+                        <p>To make use of this panel, please complete the Set-up step with your server credentials</p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-4">
+                            <a type="button" th:href="@{/logout}" class="btn btn-primary">Logout</a> <a type="button" th:href="@{/account/setup}" class="btn btn-success">Set-up</a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -62,7 +66,12 @@
     </div>
 
     <script type="text/javascript">
-        $("#alert-message").modal('show');
+        document.onreadystatechange = function () {
+            $(function () {
+                //$("#alert-message").modal('show');
+                $("#alert-message").modal({backdrop: 'static', keyboard: false})
+            });
+        }
     </script>
 </div>
 

@@ -33,7 +33,7 @@ public class UserRepositoryProvider implements UserRepository {
 
     public List<Map<String, Object>> getUserServersByUserId(String userId) {
         return jdbcTemplate.queryForList(
-                "SELECT `id`, `date_added`, `hostname`, `ip` FROM `server` WHERE `user_id` = ?",
+                "SELECT `id`, `date_added`, `hostname` FROM `server` WHERE `user_id` = ?",
                 userId
         );
     }
