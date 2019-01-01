@@ -2,12 +2,7 @@ package com.servervaletdev.model;
 
 import com.servervaletdev.wrapper.Ssh;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Column;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
@@ -39,6 +34,7 @@ public class Server {
     @Column(name="distribution_name")
     private String distributionName = "Linux";
 
+    @Transient
     private Ssh ServerConnection;
 
     /**
