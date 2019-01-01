@@ -138,11 +138,7 @@ public class AccountController {
             Ssh Server = new Ssh(hostname, username, password, port);
             Server.connect();
 
-            //fetch the distribution name
-            Server.exec("cat /etc/*-release | grep DISTRIB_ID");
-
-            String distributionName = Server.getMessage().split("=")[1];
-            newServer.setDistributionName(distributionName);
+            newServer.setDistributionName();
 
             this.ServerRepository.save(newServer);
         } catch (Exception e) {
