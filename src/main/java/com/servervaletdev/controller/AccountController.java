@@ -5,6 +5,7 @@ import com.servervaletdev.repository.ServerRepository;
 import com.servervaletdev.repository.UserRepository;
 import com.servervaletdev.model.User;
 import com.servervaletdev.repository.provider.UserDetailProvider;
+import com.servervaletdev.wrapper.Ssh;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -133,6 +134,16 @@ public class AccountController {
             Integer userId = currentSession.getIntegerUserId();
 
             Server newServer = new Server(hostname, username, password, port, userId);
+
+            Ssh Server = new Ssh(hostname, username, password, port);
+            Server.connect();
+
+            //fetch the distribution name
+            Server.exec("cat /etc/*-release | grep DISTRIB_ID");
+
+            String distributionName = Server.getMessage().split("=")[1];
+            newServer.setDistributionName(distributionName);
+
             this.ServerRepository.save(newServer);
         } catch (Exception e) {
             model.put("error", e.getMessage());
@@ -142,4 +153,17 @@ public class AccountController {
 
         return "redirect:/account/setup/success";
     }
+
+    /**
+     * Shows the success Set-up page
+     * @param model the data to send to the view
+     * @return the template name
+     */
+    @GetMapping("/account/setup/success")
+    public String setUpSucessAction(Map<String, Object> model) {
+        model.put("moduleName", "setupSuccess");
+
+        return "admin";
+    }
+
 }

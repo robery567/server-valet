@@ -34,6 +34,9 @@ public class Server {
     @Column(name = "date_added")
     private java.sql.Timestamp dateAdded;
 
+    @Column(name="distribution_name")
+    private String distributionName = "Linux";
+
     /**
      * @param hostname The remote client machine hostname
      * @param username The remote client machine username
@@ -127,5 +130,13 @@ public class Server {
 
     public void setPort(Integer port) {
         this.port = port;
+    }
+
+    public String getDistributionName() {
+        return distributionName;
+    }
+
+    public void setDistributionName(String distributionName) {
+        this.distributionName = distributionName;
     }
 }

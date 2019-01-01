@@ -33,12 +33,13 @@ public class ServerRepositoryProvider implements ServerRepository {
     @Override
     public void save(Server server) {
         jdbcTemplate.update(
-                "INSERT INTO `server` (`hostname`, `username`, `password`, `port`, `user_id`) VALUES (?, ?, ?, ?, ?)",
+                "INSERT INTO `server` (`hostname`, `username`, `password`, `port`, `user_id`, `distribution_name`) VALUES (?, ?, ?, ?, ?, ?)",
                 server.getHostName(),
                 server.getUserName(),
                 server.getPassword(),
                 server.getPort(),
-                server.getUserId()
+                server.getUserId(),
+                server.getDistributionName()
         );
     }
 }
