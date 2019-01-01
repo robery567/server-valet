@@ -7,8 +7,6 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
 import java.io.InputStream;
-//import java.io.OutputStream;
-
 
 public class Ssh {
     private final String hostname;
@@ -21,6 +19,8 @@ public class Ssh {
 
     private Session connection;
 
+    private StringBuilder lastCommandOutput;
+
     /**
      * @param hostname The remote client machine hostname
      * @param username The remote client machine username
@@ -30,6 +30,7 @@ public class Ssh {
         this.hostname = hostname;
         this.username = username;
         this.password = password;
+        this.lastCommandOutput = new StringBuilder();
     }
 
     /**
@@ -42,6 +43,7 @@ public class Ssh {
         this.username = username;
         this.password = password;
         this.port = port;
+        this.lastCommandOutput = new StringBuilder();
     }
 
     /**
@@ -71,6 +73,11 @@ public class Ssh {
         this.connection.disconnect();
     }
 
+
+    public String getMessage() {
+        return this.lastCommandOutput.toString();
+    }
+
     /**
      * Execute a given command through ssh
      * @param command The command to be executed
@@ -81,41 +88,20 @@ public class Ssh {
             Channel channel = this.connection.openChannel("exec");
             ((ChannelExec) channel).setCommand(command);
 
-            //OutputStream outputBuffer;
-
             channel.setInputStream(null);
 
-            //channel.setOutputStream(outputBuffer);
-
-            ((ChannelExec) channel).setErrStream(System.err);
-
-            InputStream in = channel.getInputStream();
+            InputStream commandOutput = channel.getInputStream();
 
             channel.connect();
 
-            byte[] tmp = new byte[1024];
+            int readByte = commandOutput.read();
 
-            while (true) {
-                while (in.available() > 0) {
-                    int i = in.read(tmp, 0, 1024);
-
-                    if (i < 0) {
-                        break;
-                    }
-
-                    System.out.print(new String(tmp, 0, i));
-                }
-
-                if (channel.isClosed()) {
-                    if (in.available() > 0) {
-                        continue;
-                    }
-
-                    break;
-                }
-
-                Thread.sleep(1000);
+            while(readByte != 0xffffffff) {
+                this.lastCommandOutput.append((char)readByte);
+                readByte = commandOutput.read();
             }
+
+            ((ChannelExec) channel).setErrStream(System.err);
 
             channel.disconnect();
 
