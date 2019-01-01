@@ -53,8 +53,12 @@ public class Ssh {
     public Boolean connect() {
         try {
             JSch jsch = new JSch();
-            this.connection = jsch.getSession(this.username, this.hostname, this.port);
 
+            java.util.Properties config = new java.util.Properties();
+            config.put("StrictHostKeyChecking", "no");
+
+            this.connection = jsch.getSession(this.username, this.hostname, this.port);
+            this.connection.setConfig(config);
             this.connection.setPassword(this.password);
             this.connection.connect();
 
