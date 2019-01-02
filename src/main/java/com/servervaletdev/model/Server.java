@@ -31,11 +31,29 @@ public class Server {
     @Column(name = "date_added")
     private java.sql.Timestamp dateAdded;
 
-    @Column(name="distribution_name")
+    @Column(name = "distribution_name")
     private String distributionName = "Linux";
 
     @Transient
     private Ssh ServerConnection;
+
+    @Transient
+    private Double totalRamMemory;
+
+    @Transient
+    private Double usedRamMemory;
+
+    @Transient
+    private Double totalStorageMemory;
+
+    @Transient
+    private Double usedStorageMemory;
+
+    @Transient
+    private Double usedCpuPercentage;
+
+    @Transient
+    private String cpuName;
 
     /**
      * @param hostname The remote client machine hostname
@@ -58,10 +76,11 @@ public class Server {
 
     /**
      * This method will do the common instructions that should be run in every constructor
+     *
      * @param hostname The server hostname to connect via SSH
      * @param username The server username to connect via SSH
      * @param password The password hostname to connect via SSH
-     * @param port The server port to connect via SSH
+     * @param port     The server port to connect via SSH
      */
     private void commonConstructor(String hostname, String username, String password, Integer port) {
         this.hostName = hostname;
@@ -71,6 +90,7 @@ public class Server {
 
         this.ServerConnection = new Ssh(hostname, username, password, port);
         this.ServerConnection.connect();
+        this.fetchRemoteAttributes();
     }
 
     /**
@@ -91,6 +111,7 @@ public class Server {
 
     /**
      * Gets the server Id
+     *
      * @return Integer
      */
     public Integer getId() {
@@ -99,6 +120,7 @@ public class Server {
 
     /**
      * Sets the server Id
+     *
      * @param id Server Id
      */
     public void setId(Integer id) {
@@ -107,6 +129,7 @@ public class Server {
 
     /**
      * Gets the User Id
+     *
      * @return Integer
      */
     public Integer getUserId() {
@@ -115,6 +138,7 @@ public class Server {
 
     /**
      * Sets the User Id
+     *
      * @param userId The server user id of the owner
      */
     public void setUserId(Integer userId) {
@@ -123,6 +147,7 @@ public class Server {
 
     /**
      * Gets the server hostname
+     *
      * @return String
      */
     public String getHostName() {
@@ -131,6 +156,7 @@ public class Server {
 
     /**
      * Sets the server hostname
+     *
      * @param hostName The server hostname to connect via SSH
      */
     public void setHostName(String hostName) {
@@ -139,6 +165,7 @@ public class Server {
 
     /**
      * Gets the date when the server has been added to the database
+     *
      * @return TimeStamp
      */
     public Timestamp getDateAdded() {
@@ -147,6 +174,7 @@ public class Server {
 
     /**
      * Sets the date when the server has been added to the database
+     *
      * @param dateAdded The creation date
      */
     public void setDateAdded(Timestamp dateAdded) {
@@ -155,6 +183,7 @@ public class Server {
 
     /**
      * Gets the server username
+     *
      * @return String
      */
     public String getUserName() {
@@ -163,6 +192,7 @@ public class Server {
 
     /**
      * Sets the server password
+     *
      * @param userName The server username to connect via SSH
      */
     public void setUserName(String userName) {
@@ -171,6 +201,7 @@ public class Server {
 
     /**
      * Gets the server password
+     *
      * @return String
      */
     public String getPassword() {
@@ -179,6 +210,7 @@ public class Server {
 
     /**
      * Sets the server password
+     *
      * @param password The server password to connect via SSH
      */
     public void setPassword(String password) {
@@ -187,6 +219,7 @@ public class Server {
 
     /**
      * Gets the server port
+     *
      * @return Integer
      */
     public Integer getPort() {
@@ -195,6 +228,7 @@ public class Server {
 
     /**
      * Sets the server port
+     *
      * @param port The server port to connect via SSH
      */
     public void setPort(Integer port) {
@@ -203,10 +237,11 @@ public class Server {
 
     /**
      * Fetch the distribution name
+     *
      * @return String
      */
     public String getDistributionName() {
-       return this.distributionName;
+        return this.distributionName;
     }
 
     /**
@@ -216,5 +251,126 @@ public class Server {
         this.ServerConnection.exec("cat /etc/*-release | grep DISTRIB_ID");
 
         this.distributionName = this.ServerConnection.getMessage().split("=")[1];
+    }
+
+    /**
+     * Gets the Server Total RAM Memory (MB)
+     *
+     * @return Double
+     */
+    public Double getTotalRamMemory() {
+        return totalRamMemory;
+    }
+
+    /**
+     * Sets the Server Total RAM Memory (MB)
+     */
+    public void setTotalRamMemory() {
+        this.ServerConnection.exec("grep MemTotal /proc/meminfo | awk '{print $2*0.001}'");
+
+        this.totalRamMemory = Double.valueOf(this.ServerConnection.getMessage());
+    }
+
+    /**
+     * Gets the Server Total Used Ram Memory (MB)
+     *
+     * @return Double
+     */
+    public Double getUsedRamMemory() {
+        return usedRamMemory;
+    }
+
+    /**
+     * Sets the Server Total Used Ram Memory (MB)
+     */
+    public void setUsedRamMemory() {
+        this.ServerConnection.exec("free | grep Mem | awk '{print ($4+$3)*0.001}'");
+
+        this.usedRamMemory = Double.valueOf(this.ServerConnection.getMessage());
+    }
+
+    /**
+     * Gets the Server Total Storage Memory (GB)
+     *
+     * @return Double
+     */
+    public Double getTotalStorageMemory() {
+        return totalStorageMemory;
+    }
+
+    /**
+     * Sets the Server Total Storage Memory (GB)
+     */
+    public void setTotalStorageMemory() {
+        this.ServerConnection.exec("df -h / | tail -1 |  awk '{print $2}'");
+
+        this.totalStorageMemory = Double.valueOf(this.ServerConnection.getMessage().split("G")[0]);
+    }
+
+    /**
+     * Gets the Server Total Used Storage Memory (GB)
+     *
+     * @return Double
+     */
+    public Double getUsedStorageMemory() {
+        return usedStorageMemory;
+    }
+
+    /**
+     * Sets the Server Total Used Storage Memory (GB)
+     */
+    public void setUsedStorageMemory() {
+        this.ServerConnection.exec("df -h / | tail -1 |  awk '{print $2}'");
+
+        this.totalStorageMemory = Double.valueOf(this.ServerConnection.getMessage().split("G")[0]);
+    }
+
+    /**
+     * Gets the percentage of used CPU
+     *
+     * @return Double
+     */
+    public Double getUsedCpuPercentage() {
+        return usedCpuPercentage;
+    }
+
+    /**
+     * Sets the percentage of used CPU
+     */
+    public void setUsedCpuPercentage() {
+        this.ServerConnection.exec("grep 'cpu ' /proc/stat | awk '{print (($2+$4)*100)/($2+$4+$5)}'");
+
+        this.usedCpuPercentage = Double.valueOf(this.ServerConnection.getMessage());
+    }
+
+    /**
+     * Gets the server CPU Name
+     *
+     * @return String
+     */
+    public String getCpuName() {
+        return cpuName;
+    }
+
+    /**
+     * Sets the server CPU Name
+     */
+    public void setCpuName() {
+        this.ServerConnection.exec("cat /proc/cpuinfo | grep 'model name' | uniq");
+
+        this.cpuName = this.ServerConnection.getMessage();
+    }
+
+    /**
+     * Fetch all the remote attributes
+     */
+    public void fetchRemoteAttributes() {
+        this.setCpuName();
+        this.setUsedCpuPercentage();
+        this.setUsedStorageMemory();
+        this.setTotalStorageMemory();
+        this.setTotalRamMemory();
+        this.setUsedRamMemory();
+        this.setDistributionName();
     }
 }

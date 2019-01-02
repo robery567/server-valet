@@ -48,7 +48,6 @@ public class UserDetailServiceProvider implements UserDetailsService {
                     Integer.parseInt(String.valueOf(currentServer.get("port")))
             );
 
-            Server.setDistributionName();
             Server.setDateAdded(java.sql.Timestamp.valueOf(String.valueOf(currentServer.get("date_added"))));
             Server.setUserId(user.getId());
             Server.setId(Integer.valueOf(String.valueOf(currentServer.get("id"))));
