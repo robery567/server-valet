@@ -41,14 +41,8 @@ public class UserDetailServiceProvider implements UserDetailsService {
 
         if (!userServer.isEmpty()) {
             Map<String, Object> currentServer = userServer.get(0);
-            Server Server = new Server(
-                    String.valueOf(currentServer.get("hostname")),
-                    String.valueOf(currentServer.get("username")),
-                    String.valueOf(currentServer.get("password")),
-                    Integer.parseInt(String.valueOf(currentServer.get("port")))
-            );
+            Server Server = userRepository.getServerObjectFromMap(currentServer);
 
-            Server.setDateAdded(java.sql.Timestamp.valueOf(String.valueOf(currentServer.get("date_added"))));
             Server.setUserId(user.getId());
             Server.setId(Integer.valueOf(String.valueOf(currentServer.get("id"))));
 

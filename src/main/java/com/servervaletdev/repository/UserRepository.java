@@ -1,5 +1,6 @@
 package com.servervaletdev.repository;
 
+import com.servervaletdev.model.Server;
 import com.servervaletdev.model.User;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +21,8 @@ public interface UserRepository {
      * @param userId The user id
      */
     List<Map<String, Object>> getUserServersByUserId(String userId);
+
+    Server getServerObjectFromMap(Map<String, Object> inputMap);
 
     /**
      * Persists the user and encodes its password

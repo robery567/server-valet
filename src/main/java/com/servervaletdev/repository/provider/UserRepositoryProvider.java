@@ -1,5 +1,6 @@
 package com.servervaletdev.repository.provider;
 
+import com.servervaletdev.model.Server;
 import com.servervaletdev.model.User;
 import com.servervaletdev.repository.UserRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -37,6 +38,21 @@ public class UserRepositoryProvider implements UserRepository {
                 "SELECT `id`, `date_added`, `hostname`, `username`, `password`, `port` FROM `server` WHERE `user_id` = ?",
                 userId
         );
+    }
+
+    @Override
+    public Server getServerObjectFromMap(Map<String, Object> inputMap) {
+        Server Server = new Server(
+                String.valueOf(inputMap.get("hostname")),
+                String.valueOf(inputMap.get("username")),
+                String.valueOf(inputMap.get("password")),
+                Integer.parseInt(String.valueOf(inputMap.get("port")))
+        );
+
+        Server.setDateAdded(java.sql.Timestamp.valueOf(String.valueOf(inputMap.get("date_added"))));
+        Server.setId(Integer.valueOf(String.valueOf(inputMap.get("id"))));
+
+        return Server;
     }
 
     @Override

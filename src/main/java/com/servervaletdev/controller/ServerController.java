@@ -20,17 +20,19 @@ public class ServerController {
 
 
     /**
-     * Shows the success Set-up page
-     * @param model the data to send to the view
+     * Shows the user server details
      * @return the template name
      */
     @GetMapping("/user/server_details")
-    public Server userServerDetailsAction(Map<String, Object> model) {
+    public Server userServerDetailsAction() {
         UserDetailProvider currentSession = (UserDetailProvider) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<Map<String, Object>> userServers = this.User.getUserServersByUserId(currentSession.getUserId());
+        Map<String, Object> userServers = this.User.getUserServersByUserId(currentSession.getUserId()).get(0);
 
+        Server Server = this.User.getServerObjectFromMap(userServers);
 
-        return currentSession.getServer();
+        Server.setUserId(currentSession.getIntegerUserId());
+
+        return Server;
     }
 
 }

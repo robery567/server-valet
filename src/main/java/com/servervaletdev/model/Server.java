@@ -250,7 +250,7 @@ public class Server {
     public void setDistributionName() {
         this.ServerConnection.exec("cat /etc/*-release | grep DISTRIB_ID");
 
-        this.distributionName = this.ServerConnection.getMessage().split("=")[1];
+        this.distributionName = this.ServerConnection.getMessage().split("=")[1].trim();
     }
 
     /**
@@ -322,7 +322,7 @@ public class Server {
     public void setUsedStorageMemory() {
         this.ServerConnection.exec("df -h / | tail -1 |  awk '{print $2}'");
 
-        this.totalStorageMemory = Double.valueOf(this.ServerConnection.getMessage().split("G")[0]);
+        this.usedStorageMemory = Double.valueOf(this.ServerConnection.getMessage().split("G")[0]);
     }
 
     /**
@@ -358,7 +358,7 @@ public class Server {
     public void setCpuName() {
         this.ServerConnection.exec("cat /proc/cpuinfo | grep 'model name' | uniq");
 
-        this.cpuName = this.ServerConnection.getMessage();
+        this.cpuName = this.ServerConnection.getMessage().split(":")[1].trim();
     }
 
     /**
