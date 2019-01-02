@@ -1,5 +1,6 @@
 package com.servervaletdev.repository.provider;
 
+import com.servervaletdev.model.Server;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,6 +13,8 @@ public class UserDetailProvider implements UserDetails {
     private String password;
 
     private String username;
+
+    private Server Server;
 
     private Collection<? extends GrantedAuthority> authorities;
 
@@ -63,4 +66,12 @@ public class UserDetailProvider implements UserDetails {
     }
 
     public void setUsername(String username) { this.username = username; }
+
+    public void setServer(Server server) {
+        this.Server = server;
+    }
+
+    public Server getServer() {
+        return this.Server;
+    }
 }

@@ -1,5 +1,6 @@
 package com.servervaletdev.repository.provider;
 
+import com.servervaletdev.model.Server;
 import com.servervaletdev.model.User;
 import com.servervaletdev.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class UserDetailServiceProvider implements UserDetailsService {
@@ -24,6 +26,7 @@ public class UserDetailServiceProvider implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.getIdByUsername(username);
+        List<Map<String, Object>> userServer = userRepository.getUserServersByUserId(user.getId().toString());
 
         if(user == null){
             throw new UsernameNotFoundException("Username not found");
@@ -35,6 +38,20 @@ public class UserDetailServiceProvider implements UserDetailsService {
 
         UserDetailProvider UserDetails = new UserDetailProvider(user.getId(), user.getPassword(), grantList);
         UserDetails.setUsername(username);
+
+        if (!userServer.isEmpty()) {
+            Map<String, Object> currentServer = userServer.get(0);
+            Server Server = new Server(
+                    String.valueOf(currentServer.get("hostname")),
+                    String.valueOf(currentServer.get("username")),
+                    String.valueOf(currentServer.get("password")),
+                    Integer.parseInt(String.valueOf(currentServer.get("port")))
+            );
+
+            Server.setDistributionName();
+
+            UserDetails.setServer(Server);
+        }
 
         return UserDetails;
     }

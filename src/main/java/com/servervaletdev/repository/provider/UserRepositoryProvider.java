@@ -31,9 +31,10 @@ public class UserRepositoryProvider implements UserRepository {
         );
     }
 
+    @Override
     public List<Map<String, Object>> getUserServersByUserId(String userId) {
         return jdbcTemplate.queryForList(
-                "SELECT `id`, `date_added`, `hostname` FROM `server` WHERE `user_id` = ?",
+                "SELECT `id`, `date_added`, `hostname`, `username`, `password`, `port` FROM `server` WHERE `user_id` = ?",
                 userId
         );
     }

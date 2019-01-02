@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 import java.util.Map;
 
-//@RestController
 @Controller
 public class HomeController {
     private final UserRepositoryProvider User;
@@ -28,7 +27,9 @@ public class HomeController {
         UserDetailProvider currentSession = (UserDetailProvider) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String currentPrincipalName = currentSession.getUsername();
         List<Map<String, Object>> userServers = this.User.getUserServersByUserId(currentSession.getUserId());
+        String distributionName = currentSession.getServer().getDistributionName();
 
+        model.put("distributionName", distributionName.toLowerCase());
         model.put("userServers", userServers);
         model.put("moduleName", "dashboard");
         model.put("name", currentPrincipalName);

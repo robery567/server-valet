@@ -6,7 +6,6 @@ import com.servervaletdev.repository.UserRepository;
 import com.servervaletdev.model.User;
 import com.servervaletdev.repository.provider.UserDetailProvider;
 import com.servervaletdev.wrapper.Ssh;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -140,6 +139,7 @@ public class AccountController {
 
             newServer.setDistributionName();
 
+            currentSession.setServer(newServer);
             this.ServerRepository.save(newServer);
         } catch (Exception e) {
             model.put("error", e.getMessage());
