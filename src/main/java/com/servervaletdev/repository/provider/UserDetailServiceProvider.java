@@ -28,7 +28,7 @@ public class UserDetailServiceProvider implements UserDetailsService {
         User user = userRepository.getIdByUsername(username);
         List<Map<String, Object>> userServer = userRepository.getUserServersByUserId(user.getId().toString());
 
-        if(user == null){
+        if (user == null) {
             throw new UsernameNotFoundException("Username not found");
         }
 
@@ -49,6 +49,9 @@ public class UserDetailServiceProvider implements UserDetailsService {
             );
 
             Server.setDistributionName();
+            Server.setDateAdded(java.sql.Timestamp.valueOf(String.valueOf(currentServer.get("date_added"))));
+            Server.setUserId(user.getId());
+            Server.setId(Integer.valueOf(String.valueOf(currentServer.get("id"))));
 
             UserDetails.setServer(Server);
         }
