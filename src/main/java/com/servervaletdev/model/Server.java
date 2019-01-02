@@ -320,7 +320,7 @@ public class Server {
      * Sets the Server Total Used Storage Memory (GB)
      */
     public void setUsedStorageMemory() {
-        this.ServerConnection.exec("df -h / | tail -1 |  awk '{print $2}'");
+        this.ServerConnection.exec("df -h / | tail -1 |  awk '{print $3}'");
 
         this.usedStorageMemory = Double.valueOf(this.ServerConnection.getMessage().split("G")[0]);
     }
