@@ -89,6 +89,7 @@ public class Ssh {
      */
     public Boolean exec(String command) {
         try {
+            this.lastCommandOutput = new StringBuilder();
             Channel channel = this.connection.openChannel("exec");
             ((ChannelExec) channel).setCommand(command);
 
@@ -97,7 +98,6 @@ public class Ssh {
             InputStream commandOutput = channel.getInputStream();
 
             channel.connect();
-
             int readByte = commandOutput.read();
 
             while(readByte != 0xffffffff) {
