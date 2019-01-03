@@ -27,9 +27,13 @@ public class HomeController {
         UserDetailProvider currentSession = (UserDetailProvider) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String currentPrincipalName = currentSession.getUsername();
         List<Map<String, Object>> userServers = this.User.getUserServersByUserId(currentSession.getUserId());
-        String distributionName = currentSession.getServer().getDistributionName();
 
-        model.put("distributionName", distributionName.toLowerCase());
+        if (!userServers.isEmpty()) {
+            String distributionName = currentSession.getServer().getDistributionName();
+            model.put("distributionName", distributionName.toLowerCase());
+            model.put("serverDetails", currentSession.getServer());
+        }
+
         model.put("userServers", userServers);
         model.put("moduleName", "dashboard");
         model.put("name", currentPrincipalName);
