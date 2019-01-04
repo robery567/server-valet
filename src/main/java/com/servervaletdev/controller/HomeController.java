@@ -1,5 +1,6 @@
 package com.servervaletdev.controller;
 
+import com.servervaletdev.model.Server;
 import com.servervaletdev.repository.provider.UserDetailProvider;
 import com.servervaletdev.repository.provider.UserRepositoryProvider;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,8 +31,11 @@ public class HomeController {
 
         if (!userServers.isEmpty()) {
             String distributionName = currentSession.getServer().getDistributionName();
+            Server serverDetails = currentSession.getServer();
+
             model.put("distributionName", distributionName.toLowerCase());
-            model.put("serverDetails", currentSession.getServer());
+            model.put("serverDetails", serverDetails);
+            model.put("usedStoragePercentage", serverDetails.getUsedStorageMemory()/serverDetails.getTotalStorageMemory()*100);
         }
 
         model.put("userServers", userServers);

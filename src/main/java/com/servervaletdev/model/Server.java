@@ -55,6 +55,15 @@ public class Server {
     @Transient
     private String cpuName;
 
+    @Transient
+    private Integer totalUptime;
+
+    @Transient
+    private Integer activeProcesses;
+
+    @Transient
+    private Integer connectedUsers;
+
     /**
      * @param hostname The remote client machine hostname
      * @param username The remote client machine username
@@ -361,10 +370,63 @@ public class Server {
         this.cpuName = this.ServerConnection.getMessage().split(":")[1].trim();
     }
 
+
+    /**
+     * Gets the total uptime of the server
+     * @return Integer
+     */
+    public Integer getTotalUptime() {
+        return totalUptime;
+    }
+
+    /**
+     * Sets the total uptime of the server
+     */
+    public void setTotalUptime() {
+        this.ServerConnection.exec("uptime | awk -F'( |,|:)+' '{print $6*24+$8}'");
+
+        this.totalUptime = Integer.valueOf(this.ServerConnection.getMessage().trim());
+    }
+
+
+    /**
+     * Gets the total number of active processes
+     * @return Integer
+     */
+    public Integer getActiveProcesses() {
+        return activeProcesses;
+    }
+
+    /**
+     * Sets the total number of active processes
+     */
+    public void setActiveProcesses() {
+        this.ServerConnection.exec("ps aux | wc -l");
+
+        this.activeProcesses = Integer.valueOf(this.ServerConnection.getMessage().trim());
+    }
+
+    /**
+     * Gets the number of total logged in users on the server
+     * @return Integer
+     */
+    public Integer getConnectedUsers() {
+        return connectedUsers;
+    }
+
+    /**
+     * Sets the number of total logged in users on the server
+     */
+    public void setConnectedUsers() {
+        this.ServerConnection.exec("who | wc -l");
+
+        this.connectedUsers = Integer.valueOf(this.ServerConnection.getMessage().trim());
+    }
+
     /**
      * Fetch all the remote attributes
      */
-    public void fetchRemoteAttributes() {
+    private void fetchRemoteAttributes() {
         this.setCpuName();
         this.setUsedCpuPercentage();
         this.setUsedStorageMemory();
@@ -372,5 +434,8 @@ public class Server {
         this.setTotalRamMemory();
         this.setUsedRamMemory();
         this.setDistributionName();
+        this.setTotalUptime();
+        this.setActiveProcesses();
+        this.setConnectedUsers();
     }
 }
