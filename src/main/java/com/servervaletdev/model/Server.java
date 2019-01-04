@@ -338,7 +338,7 @@ public class Server {
      * Sets the percentage of used CPU
      */
     public void setUsedCpuPercentage() {
-        this.ServerConnection.exec("grep 'cpu ' /proc/stat | awk '{print (($2+$4)*100)/($2+$4+$5)}'");
+        this.ServerConnection.exec("top -d 0.5 -b -n2 | grep \"Cpu(s)\"|tail -n 1 | awk '{print $2 + $4}'");
 
         this.usedCpuPercentage = Double.valueOf(this.ServerConnection.getMessage());
     }
