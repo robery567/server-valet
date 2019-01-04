@@ -38,6 +38,7 @@
         </div>
     </div>
     <!-- /top tiles -->
+
     <div class="row">
         <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="x_panel tile fixed_height_320">
@@ -83,7 +84,7 @@
                                 <i class="fa fa-bars"></i>Memory
                             </li>
                             <!--/*@thymesVar id="serverDetails" type="com.servervaletdev.model.Server"*/-->
-                            <li style="font-size: 0.883em;" th:text="${serverDetails.getTotalRamMemory()} Mb"></li>
+                            <li style="font-size: 0.883em;" th:text="${serverDetails.getTotalRamMemory()}"></li>
                         </ul>
 
                         <div class="sidebar-widget">
@@ -178,7 +179,6 @@
         </div>
 
     </div>
-    <br/>
 
     <div class="row">
         <div class="col-md-4 col-sm-4 col-xs-12">
