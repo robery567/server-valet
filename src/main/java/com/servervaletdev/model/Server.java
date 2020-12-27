@@ -259,7 +259,13 @@ public class Server {
     public void setDistributionName() {
         this.ServerConnection.exec("cat /etc/*-release | grep DISTRIB_ID");
 
-        this.distributionName = this.ServerConnection.getMessage().split("=")[1].trim();
+        String returnedResponse = this.ServerConnection.getMessage();
+
+        if (returnedResponse.length() == 0) {
+            this.distributionName = "Linux";
+        } else {
+            this.distributionName = this.ServerConnection.getMessage().split("=")[1].trim();
+        }
     }
 
     /**
