@@ -23,6 +23,7 @@ public class User {
         this.setUsername(username);
         this.setEmail(email);
         this.setPassword(password);
+        this.setAccessLevel(1);
 
         Calendar calendar = Calendar.getInstance();
         java.util.Date now = calendar.getTime();
@@ -52,6 +53,10 @@ public class User {
 
     @Column(nullable = false)
     private Integer active = 1;
+
+    public User() {
+
+    }
 
     public Integer getId() {
         return id;

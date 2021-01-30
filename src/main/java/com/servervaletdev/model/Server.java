@@ -83,6 +83,10 @@ public class Server {
         this.userId = ownerId;
     }
 
+    public Server() {
+
+    }
+
     /**
      * This method will do the common instructions that should be run in every constructor
      *
